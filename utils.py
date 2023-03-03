@@ -1,6 +1,6 @@
 
 import random
-from string import ascii_letters
+from string import ascii_letters, ascii_uppercase
 
 def get_secret_word():
     wordList = []
@@ -13,7 +13,25 @@ def get_secret_word():
 
     return random.choice(wordList)
 
+def guess_word(previous_guesses, console):
+    guess = console.input("\nGuess word: ").upper()
+
+    if guess in previous_guesses:
+        console.print(f"You've already guesses {guess}.", style="warning")
+        return guess_word(previous_guesses, console)
+
+    if len(guess) != 5:
+        console.print(f"Your guess must be 5 letters.", style="warning")
+        return guess_word(previous_guesses, console)
+
+    if any((invalid := letter) not in ascii_letters for letter in guess):
+        console.print(f"Invalid letter: '{invalid}'. Please use English letters only.", style="warning")
+        return guess_word(previous_guesses, console)
+
+    return guess
+
 def show_guesses(guesses, secret_word, console):
+    letter_status = {letter: letter for letter in ascii_uppercase}
     for guess in guesses:
         styled_guess = []
         for letter, correct in zip(guess, secret_word):
@@ -26,8 +44,11 @@ def show_guesses(guesses, secret_word, console):
             else:
                 style = "dim"
             styled_guess.append(f"[{style}]{letter}[/]")
+            if letter != "_":
+                letter_status[letter] = f"[{style}]{letter}[/]"
 
         console.print("".join(styled_guess), justify="center")
+    console.print("\n" + "".join(letter_status.values()), justify="center")
 
 def refresh_page(headline, console):
     console.clear()

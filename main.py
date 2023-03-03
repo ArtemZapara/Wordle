@@ -1,4 +1,4 @@
-from utils import get_secret_word, show_guesses, game_over, refresh_page
+from utils import get_secret_word, guess_word, show_guesses, game_over, refresh_page
 from rich.console import Console
 from rich.theme import Theme
 
@@ -13,7 +13,7 @@ def main():
         refresh_page(headline, console)
         show_guesses(guesses, secret_word, console)
 
-        guesses[idx] = input(f"Guess word: ").upper()
+        guesses[idx] = guess_word(guesses[:idx], console)
         if guesses[idx] == secret_word:
             break
 
