@@ -17,7 +17,7 @@ def guess_word(previous_guesses, console):
     guess = console.input("\nGuess word: ").upper()
 
     if guess in previous_guesses:
-        console.print(f"You've already guesses {guess}.", style="warning")
+        console.print(f"You've already guessed {guess}.", style="warning")
         return guess_word(previous_guesses, console)
 
     if len(guess) != 5:
